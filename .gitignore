@@ -1,0 +1,26 @@
+# Node
+node_modules/
+dist/
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
+
+# Next build
+.next/
+
+# Supabase local
+.supabase/
