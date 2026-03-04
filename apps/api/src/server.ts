@@ -1,7 +1,6 @@
 import { Hono } from "hono";
-import { createItemSchema } from "./validators/item";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { supabase as realSupabase } from "./lib/supabase";
+import { createItemSchema } from "./validators/item";
 
 type Deps = {
   supabase: SupabaseClient;
@@ -31,7 +30,6 @@ export function createApp(deps: Deps) {
 
     const result = createItemSchema.safeParse(body);
     if (!result.success) {
-      console.log(result.error.flatten());  
       return c.json({ error: result.error.flatten() }, 400);
     }
 
@@ -51,5 +49,28 @@ export function createApp(deps: Deps) {
   return app;
 }
 
-// Default app used by runtime
-export const app = createApp({ supabase: realSupabase });
+let cachedSupabase: SupabaseClient | null = null;
+
+async function getRealSupabase(): Promise<SupabaseClient> {
+  if (cachedSupabase) return cachedSupabase;
+  const mod = await import("./lib/supabase");
+  cachedSupabase = mod.supabase as SupabaseClient;
+  return cachedSupabase;
+}
+
+
+const lazySupabase = new Proxy(
+  {},
+  {
+    get(_target, prop) {
+      // Return a function; when called it loads real supabase then forwards
+      return async (...args: any[]) => {
+        const real = await getRealSupabase();
+        const value = (real as any)[prop];
+        return typeof value === "function" ? value.apply(real, args) : value;
+      };
+    },
+  }
+) as unknown as SupabaseClient;
+
+export const app = createApp({ supabase: lazySupabase });
