@@ -1,9 +1,11 @@
 import request from "supertest";
-import { app } from "../server";
 import { serve } from "@hono/node-server";
+import { createApp } from "../server";
+import { makeMockSupabase } from "../test-utils/mockSupabase";
 
 describe("GET /health", () => {
   it("returns status ok", async () => {
+    const app = createApp({ supabase: makeMockSupabase() });
     const server = serve({ fetch: app.fetch, port: 0 });
 
     try {
