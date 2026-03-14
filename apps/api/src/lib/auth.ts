@@ -1,16 +1,25 @@
 import dotenv from "dotenv";
-dotenv.config({ path: ".env.local" });
-
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+dotenv.config({ path: ".env.local" });
 
-if (!supabaseUrl || !serviceRoleKey) {
-  throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in env");
+let cachedSupabaseAdmin: ReturnType<typeof createClient> | null = null;
+
+function getSupabaseAdmin() {
+  if (cachedSupabaseAdmin) {
+    return cachedSupabaseAdmin;
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in env");
+  }
+
+  cachedSupabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
+  return cachedSupabaseAdmin;
 }
-
-const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
 
 export async function getUserFromAuthHeader(authHeader?: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -18,6 +27,8 @@ export async function getUserFromAuthHeader(authHeader?: string | null) {
   }
 
   const token = authHeader.replace("Bearer ", "").trim();
+
+  const supabaseAdmin = getSupabaseAdmin();
 
   const {
     data: { user },
