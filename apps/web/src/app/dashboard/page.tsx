@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 type Item = {
   id: string;
@@ -31,6 +31,8 @@ export default function DashboardPage() {
     async function loadDashboard() {
       setLoading(true);
       setError("");
+
+      const supabase = getSupabaseClient();
 
       try {
         const {
@@ -71,6 +73,7 @@ export default function DashboardPage() {
   }, [router]);
 
   async function handleLogout() {
+    const supabase = getSupabaseClient();
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();
@@ -80,6 +83,8 @@ export default function DashboardPage() {
     e.preventDefault();
     setSubmitting(true);
     setError("");
+
+    const supabase = getSupabaseClient();
 
     try {
       const {
