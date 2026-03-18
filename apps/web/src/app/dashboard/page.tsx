@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "@/lib/supabaseClient";
+import { getApiBaseUrl } from "@/lib/config";
 
 type Item = {
   id: string;
@@ -46,7 +47,7 @@ export default function DashboardPage() {
 
         setUser({ email: session.user.email ?? null });
 
-        const res = await fetch("http://localhost:4000/items", {
+        const res = await fetch(`${getApiBaseUrl()}/items`, {
           headers: {
             Authorization: `Bearer ${session.access_token}`,
           },
@@ -96,7 +97,7 @@ export default function DashboardPage() {
         return;
       }
 
-      const res = await fetch("http://localhost:4000/items", {
+      const res = await fetch(`${getApiBaseUrl()}/items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
