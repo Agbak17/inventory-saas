@@ -12,6 +12,17 @@ type Deps = {
 export function createApp(deps: Deps) {
   const app = new Hono();
 
+  app.onError((err, c) => {
+    console.error("API Error:", err);
+
+    return c.json(
+      {
+        error: err instanceof Error ? err.message : "Internal Server Error",
+      },
+      500
+    );
+  });
+
   app.use(
     "*",
     cors({
@@ -31,7 +42,10 @@ export function createApp(deps: Deps) {
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const { orgId, error: orgError } = await getUserOrgId(deps.supabase, user.id);
+    const { orgId, error: orgError } = await getUserOrgId(
+      deps.supabase,
+      user.id
+    );
 
     if (orgError || !orgId) {
       return c.json({ error: orgError ?? "No organization found" }, 404);
@@ -58,7 +72,10 @@ export function createApp(deps: Deps) {
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const { orgId, error: orgError } = await getUserOrgId(deps.supabase, user.id);
+    const { orgId, error: orgError } = await getUserOrgId(
+      deps.supabase,
+      user.id
+    );
 
     if (orgError || !orgId) {
       return c.json({ error: orgError ?? "No organization found" }, 404);

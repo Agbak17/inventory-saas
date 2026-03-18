@@ -17,6 +17,12 @@ type UserState = {
   email: string | null;
 };
 
+type ItemsResponse = {
+  items?: Item[];
+  item?: Item;
+  error?: string;
+};
+
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<UserState | null>(null);
@@ -27,6 +33,16 @@ export default function DashboardPage() {
   const [name, setName] = useState("");
   const [sku, setSku] = useState("");
   const [quantity, setQuantity] = useState(0);
+
+  async function parseResponse(res: Response): Promise<ItemsResponse | string> {
+    const contentType = res.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+      return res.json();
+    }
+
+    return res.text();
+  }
 
   useEffect(() => {
     async function loadDashboard() {
@@ -53,14 +69,20 @@ export default function DashboardPage() {
           },
         });
 
-        const data = await res.json();
+        const data = await parseResponse(res);
 
         if (!res.ok) {
-          setError(data.error ?? "Failed to load items");
+          const message =
+            typeof data === "string"
+              ? data
+              : data.error ?? "Failed to load items";
+          setError(message);
           return;
         }
 
-        setItems(data.items ?? []);
+        if (typeof data !== "string") {
+          setItems(data.items ?? []);
+        }
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to load dashboard";
@@ -110,14 +132,21 @@ export default function DashboardPage() {
         }),
       });
 
-      const data = await res.json();
+      const data = await parseResponse(res);
 
       if (!res.ok) {
-        setError(data.error ?? "Failed to create item");
+        const message =
+          typeof data === "string"
+            ? data
+            : data.error ?? "Failed to create item";
+        setError(message);
         return;
       }
 
-      setItems((prev) => [data.item, ...prev]);
+      if (typeof data !== "string" && data.item) {
+        setItems((prev) => [data.item as Item, ...prev]);
+      }
+
       setName("");
       setSku("");
       setQuantity(0);
