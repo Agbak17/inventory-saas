@@ -17,7 +17,7 @@ export function createApp(deps: Deps) {
     cors({
       origin: [
         "http://localhost:3000",
-        "https://inventory-saas-o2pl60zgw-armstrong-agbakwurus-projects.vercel.app",
+        "https://inventory-saas-lzd14iaga-armstrong-agbakwurus-projects.vercel.app",
       ],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["GET", "POST"],
