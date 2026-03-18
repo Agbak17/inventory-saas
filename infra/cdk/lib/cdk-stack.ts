@@ -26,10 +26,7 @@ export class CdkStack extends cdk.Stack {
     const functionUrl = apiFunction.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
       cors: {
-        allowedOrigins: [
-          "http://localhost:3000",
-          "https://inventory-saas-o2pl60zgw-armstrong-agbakwurus-projects.vercel.app",
-        ],
+        allowedOrigins: ["*"],
         allowedMethods: [
           lambda.HttpMethod.GET,
           lambda.HttpMethod.POST,
