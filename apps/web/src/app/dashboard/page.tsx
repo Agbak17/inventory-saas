@@ -163,7 +163,7 @@ export default function DashboardPage() {
     return (
       <main className="min-h-screen p-6">
         <div className="max-w-3xl mx-auto rounded-2xl border p-6 shadow-sm">
-          <p className="text-sm text-gray-600">Loading dashboard...</p>
+          <p className="text-sm text-gray-600">Loading dashboard v2...</p>
         </div>
       </main>
     );
