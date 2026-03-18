@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { cors } from "hono/cors";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createItemSchema } from "./validators/item";
 import { getUserFromAuthHeader } from "./lib/auth";
@@ -22,15 +21,6 @@ export function createApp(deps: Deps) {
       500
     );
   });
-
-  app.use(
-    "*",
-    cors({
-      origin: "*",
-      allowHeaders: ["Content-Type", "Authorization"],
-      allowMethods: ["GET", "POST"],
-    })
-  );
 
   app.get("/health", (c) => c.json({ status: "ok" }));
 
