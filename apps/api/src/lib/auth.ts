@@ -13,15 +13,6 @@ function getSupabaseAdmin() {
   const supabaseUrl = (process.env.SUPABASE_URL ?? "").trim();
   const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
 
-  console.log("SUPABASE ADMIN ENV DEBUG", {
-    hasUrl: !!supabaseUrl,
-    url: supabaseUrl,
-    hasServiceRoleKey: !!serviceRoleKey,
-    serviceRoleKeyLength: serviceRoleKey.length,
-    serviceRoleKeyHasNewline:
-      serviceRoleKey.includes("\n") || serviceRoleKey.includes("\r"),
-  });
-
   if (!supabaseUrl || !serviceRoleKey) {
     throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in env");
   }
@@ -37,12 +28,6 @@ export async function getUserFromAuthHeader(authHeader?: string | null) {
 
   const token = authHeader.replace("Bearer ", "").trim();
 
-  console.log("AUTH HEADER DEBUG", {
-    hasAuthHeader: !!authHeader,
-    startsWithBearer: authHeader.startsWith("Bearer "),
-    tokenLength: token.length,
-  });
-
   const supabaseAdmin = getSupabaseAdmin();
 
   const {
@@ -51,7 +36,6 @@ export async function getUserFromAuthHeader(authHeader?: string | null) {
   } = await supabaseAdmin.auth.getUser(token);
 
   if (error || !user) {
-    console.error("SUPABASE AUTH GET USER ERROR", error);
     return { user: null, error: "Unauthorized" };
   }
 
