@@ -32,6 +32,68 @@ Repository: https://github.com/Agbak17/inventory-saas
 
 ---
 
+## Local Development Setup
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Agbak17/inventory-saas.git
+cd inventory-saas
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Environment Variables
+
+Create a `.env.local` file inside `apps/api`:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
+
+Create a `.env.local` file inside `apps/web`:
+
+```env
+NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+---
+
+## Run Frontend
+
+```bash
+cd apps/web
+npm run dev
+```
+
+---
+
+## Run Backend API
+
+```bash
+cd apps/api
+npm run dev
+```
+
+---
+
+## Run Tests
+
+```bash
+npm test
+```
+
+---
+
 ## Features
 
 - Multi-tenant inventory management
