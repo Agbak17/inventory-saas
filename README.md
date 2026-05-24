@@ -32,68 +32,6 @@ Repository: https://github.com/Agbak17/inventory-saas
 
 ---
 
-## Local Development Setup
-
-### Clone Repository
-
-```bash
-git clone https://github.com/Agbak17/inventory-saas.git
-cd inventory-saas
-```
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
----
-
-## Environment Variables
-
-Create a `.env.local` file inside `apps/api`:
-
-```env
-SUPABASE_URL=your_supabase_url
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-```
-
-Create a `.env.local` file inside `apps/web`:
-
-```env
-NEXT_PUBLIC_API_URL=your_api_url
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
----
-
-## Run Frontend
-
-```bash
-cd apps/web
-npm run dev
-```
-
----
-
-## Run Backend API
-
-```bash
-cd apps/api
-npm run dev
-```
-
----
-
-## Run Tests
-
-```bash
-npm test
-```
-
----
-
 ## Features
 
 - Multi-tenant inventory management
@@ -159,3 +97,95 @@ infra/
 .github/
   workflows/ # CI/CD pipelines
 ```
+
+---
+
+## Local Development Setup
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Agbak17/inventory-saas.git
+cd inventory-saas
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Environment Variables
+
+Create a `.env.local` file inside `apps/api`:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
+
+Create a `.env.local` file inside `apps/web`:
+
+```env
+NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+---
+
+## Run Frontend
+
+```bash
+cd apps/web
+npm run dev
+```
+
+---
+
+## Run Backend API
+
+```bash
+cd apps/api
+npm run dev
+```
+
+---
+
+## Run Tests
+
+```bash
+npm test
+```
+
+---
+
+## Challenges & Lessons Learned
+
+One of the biggest challenges during development was configuring communication between the Vercel frontend and the AWS Lambda backend in production environments.
+
+A production CORS issue caused browser requests to fail because conflicting `Access-Control-Allow-Origin` headers were being returned from the API configuration. Resolving this required debugging both the application code and AWS deployment configuration.
+
+Other challenges included:
+
+- Managing Supabase authentication and protected routes
+- Designing organization-based access control for multi-tenant inventory data
+- Configuring environment variables across local and production environments
+- Writing integration tests for authenticated API routes
+- Structuring the project as a monorepo with separate frontend, backend, and infrastructure layers
+- Deploying and debugging serverless APIs using AWS Lambda and API Gateway
+
+These challenges provided hands-on experience with real-world deployment, infrastructure, authentication, and backend architecture workflows.
+
+---
+
+## Future Improvements
+
+- Role-based access control
+- Real-time inventory updates using WebSockets
+- Advanced inventory analytics and reporting
+- Docker containerization
+- Automated infrastructure deployment improvements
+- Inventory forecasting and low-stock notifications
