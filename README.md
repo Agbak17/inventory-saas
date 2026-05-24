@@ -14,6 +14,24 @@ Repository: https://github.com/Agbak17/inventory-saas
 
 ---
 
+## Screenshots
+
+### Landing Page
+
+![Landing Page](assets/landing-page.png)
+
+### Authentication
+
+![Login Page](assets/login-page.png)
+
+![Signup Page](assets/signup-page.png)
+
+### Dashboard
+
+![Dashboard](assets/dashboard.png)
+
+---
+
 ## Features
 
 - Multi-tenant inventory management
